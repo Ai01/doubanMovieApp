@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Link from 'next/link';
-import Menu from 'antd/lib/menu';
-import 'antd/lib/menu/style';
+import { Menu } from 'antd';
 
 const MenuItem = Menu.Item;
 

@@ -2,7 +2,7 @@
   "presets": ["next/babel"],
   "plugins": [
     "transform-decorators-legacy",
-   [
+    [
       "import",
       {
         "libraryName": "antd",

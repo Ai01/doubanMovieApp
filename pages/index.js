@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import PageHeader from '../components/pageHeader'
+import PageLayOut from '../layout/pageLayout';
 
-
-class Home extends  Component {
-  render(){
+class Home extends Component {
+  render() {
     return (
-      <div>
-        <PageHeader/>
-        test
-      </div>
+      <PageLayOut>
+        <div>test</div>
+      </PageLayOut>
     );
   }
 }
