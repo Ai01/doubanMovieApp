@@ -1,8 +1,9 @@
+import styles from 'antd/dist/antd.css';
 import PageHeader from '../components/pageHeader';
 
 export default (props)=>(
   <div>
-    <link rel='stylesheet' href='http://cdn.bootcss.com/antd/2.9.3/antd.css' />
+    <style dangerouslySetInnerHTML={{__html: styles}} />
     <PageHeader/>
     {props.children}
   </div>
