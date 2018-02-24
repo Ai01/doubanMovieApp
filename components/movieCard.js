@@ -7,20 +7,20 @@ class MovieCard extends Component {
     if (!movieData) {
       return '没有电影信息';
     }
-    const { picUrl, start, title, link } = movieData;
+    const { posterUrl, grade, name, resourceLink } = movieData;
     return (
       <div className={'movieCardContainer'}>
         <div className={'movieImage'}>
-          <img src={picUrl} alt={title} />
+          <img src={posterUrl} alt={name} />
         </div>
         <div className={'movieInfoContainer'}>
           <div className={'movieInfoItem'}>
             <span>电影名称:</span>
-            <a href={link}>{title}</a>
+            <a href={resourceLink}>{name}</a>
           </div>
           <div className={'movieInfoItem'}>
             <span>评分:</span>
-            <span>{start}</span>
+            <span>{grade}</span>
           </div>
         </div>
         <style jsx>{`

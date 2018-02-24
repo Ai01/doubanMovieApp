@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import fetch from 'isomorphic-unfetch';
-import { Pagination } from 'antd';
+import { Pagination, message } from 'antd';
 
 import PageLayout from '../layout/pageLayout';
 import MovieCard from '../components/movieCard';
@@ -9,28 +9,40 @@ import MovieCard from '../components/movieCard';
 const pageSize = 10;
 
 const getMoviesData = async (page, pageSize) => {
-  const res = await fetch(`http://localhost:8110/allMovies?page=${page || 1}&&pgaeSize=${pageSize || 10}`);
-  const data = await res.json();
-  return {
-    moviesData: data ? data.moviesData : [],
-    moviesTotalAmount: data ? data.moviesTotalAmount : 0,
-  };
+  try {
+    const res = await fetch(`http://localhost:8040/movies?page=${page || 1}`);
+
+    if (res.ok) {
+      const data = await res.json();
+      const { movies, moviesTotalAmount } = data || {};
+      return {
+        movies: movies ? movies : [],
+        moviesTotalAmount: moviesTotalAmount ? moviesTotalAmount : 0,
+      };
+    } else {
+      const errorMessage = await res.text();
+      message.error(errorMessage);
+    }
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 class AllMovies extends Component {
   state = {
     moviesTotalAmount: 0,
-    moviesData: [],
+    movies: [],
   };
 
   static getInitialProps = async () => {
-    return await getMoviesData();
+    const movie = await getMoviesData();
+    return movie || {};
   };
 
   componentWillMount() {
-    const { moviesData, moviesTotalAmount } = this.props;
+    const { movies, moviesTotalAmount } = this.props;
     this.setState({
-      moviesData,
+      movies,
       moviesTotalAmount,
     });
   }
@@ -41,13 +53,17 @@ class AllMovies extends Component {
   };
 
   render() {
-    const { moviesData, moviesTotalAmount } = this.state;
+    const { movies, moviesTotalAmount } = this.state;
     return (
       <PageLayout>
-        {moviesData.map(data => {
-          return <MovieCard movieData={data} key={data && data._id} />;
-        })}
-        <Pagination total={moviesTotalAmount} pageSize={pageSize} onChange={this.changePage.bind(this)} />
+        {movies ? (
+          <div>
+            {movies.map(data => {
+              return <MovieCard movieData={data} key={data && data._id} />;
+            })}
+            <Pagination total={moviesTotalAmount} pageSize={pageSize} onChange={this.changePage.bind(this)} />
+          </div>
+        ) : null}
       </PageLayout>
     );
   }

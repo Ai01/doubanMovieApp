@@ -5,7 +5,7 @@ class Home extends Component {
   render() {
     return (
       <PageLayOut>
-        <div>test</div>
+        <div>oneMovie是实验项目</div>
       </PageLayOut>
     );
   }
