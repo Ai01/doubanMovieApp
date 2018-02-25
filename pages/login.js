@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from 'antd/dist/antd.css';
 import { Form, Input, Checkbox, Button, Icon } from 'antd';
 import axios from 'axios';
+import Router from 'next/router';
 
 const FormItem = Form.Item;
 
@@ -24,6 +25,10 @@ class LoginPage extends Component {
           )
           .then(response => {
             console.log(response);
+            Router.push('/');
+          })
+          .catch(e => {
+            console.log(e);
           });
       }
     });
@@ -38,7 +43,7 @@ class LoginPage extends Component {
           <FormItem>
             {getFieldDecorator('phone', {
               rules: [{ required: true, message: '请输入手机号码!' }],
-            })(<Input prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="手机号码" />)}
+            })(<Input prefix={<Icon type="phone" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="手机号码" />)}
           </FormItem>
           <FormItem>
             {getFieldDecorator('password', {
