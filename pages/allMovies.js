@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import fetch from 'isomorphic-unfetch';
+import axios from 'axios';
 import { Pagination, message } from 'antd';
 
 import PageLayout from '../layout/pageLayout';
@@ -10,21 +10,23 @@ const pageSize = 10;
 
 const getMoviesData = async (page, pageSize) => {
   try {
-    const res = await fetch(`http://localhost:8040/movies?page=${page || 1}`);
+    const res = await axios.get(`http://localhost:8040/movies?page=${page || 1}`, {
+      withCredentials: true,
+    });
 
-    if (res.ok) {
-      const data = await res.json();
+    if (res && res.status === 200) {
+      const data = res.data;
       const { movies, moviesTotalAmount } = data || {};
       return {
         movies: movies ? movies : [],
         moviesTotalAmount: moviesTotalAmount ? moviesTotalAmount : 0,
       };
-    } else {
-      const errorMessage = await res.text();
-      message.error(errorMessage);
     }
   } catch (e) {
-    console.log(e);
+    if (e && e.response) {
+      const errorMessage = e.response.data || '没有错误消息';
+      message.error(errorMessage);
+    }
   }
 };
 
@@ -35,8 +37,8 @@ class AllMovies extends Component {
   };
 
   static getInitialProps = async () => {
-    const movie = await getMoviesData();
-    return movie || {};
+    const moviesData = await getMoviesData();
+    return moviesData || {};
   };
 
   componentWillMount() {
@@ -47,25 +49,32 @@ class AllMovies extends Component {
     });
   }
 
-  changePage = async function(page, pageSize) {
+  changePage = async (page, pageSize) => {
     const data = await getMoviesData(page, pageSize);
     this.setState(data);
   };
 
+  renderMovies = (movies, moviesTotalAmount) => {
+    return (
+      <div style={{ paddingBottom: 20 }}>
+        {movies.map(data => {
+          return (
+            <MovieCard movieData={data} key={data && data._id} style={{ width: '45%', display: 'inline-block' }} />
+          );
+        })}
+        <Pagination
+          style={{ float: 'right' }}
+          total={moviesTotalAmount}
+          pageSize={pageSize}
+          onChange={this.changePage}
+        />
+      </div>
+    );
+  };
+
   render() {
     const { movies, moviesTotalAmount } = this.state;
-    return (
-      <PageLayout>
-        {movies ? (
-          <div>
-            {movies.map(data => {
-              return <MovieCard movieData={data} key={data && data._id} />;
-            })}
-            <Pagination total={moviesTotalAmount} pageSize={pageSize} onChange={this.changePage.bind(this)} />
-          </div>
-        ) : null}
-      </PageLayout>
-    );
+    return <PageLayout>{movies ? this.renderMovies(movies, moviesTotalAmount) : '没有资源'}</PageLayout>;
   }
 }
 

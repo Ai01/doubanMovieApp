@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 
 class MovieCard extends Component {
   render() {
-    const { movieData } = this.props;
+    const { movieData, style } = this.props;
     if (!movieData) {
       return '没有电影信息';
     }
     const { posterUrl, grade, name, resourceLink } = movieData;
     return (
-      <div className={'movieCardContainer'}>
+      <div className={'movieCardContainer'} style={style} >
         <div className={'movieImage'}>
           <img src={posterUrl} alt={name} />
         </div>
@@ -53,6 +53,7 @@ class MovieCard extends Component {
 
 MovieCard.propTypes = {
   movieData: PropTypes.object,
+  style: PropTypes.object
 };
 
 export default MovieCard;

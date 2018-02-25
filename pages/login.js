@@ -4,20 +4,24 @@ import styles from 'antd/dist/antd.css';
 import { Form, Input, Checkbox, Button, Icon } from 'antd';
 import axios from 'axios';
 
-
 const FormItem = Form.Item;
 
 class LoginPage extends Component {
-
   handleSubmit = e => {
     e.preventDefault();
     const { form } = this.props;
     form.validateFields((err, values) => {
       if (!err) {
         axios
-          .post('http://localhost:8040/token', {
-            ...values,
-          })
+          .post(
+            'http://localhost:8040/token',
+            {
+              ...values,
+            },
+            {
+              withCredentials: true,
+            },
+          )
           .then(response => {
             console.log(response);
           });

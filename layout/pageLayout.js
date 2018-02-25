@@ -5,6 +5,8 @@ export default (props)=>(
   <div>
     <style dangerouslySetInnerHTML={{__html: styles}} />
     <PageHeader/>
-    {props.children}
+    <div style={{ padding: 10 }}>
+      {props.children}
+    </div>
   </div>
 )

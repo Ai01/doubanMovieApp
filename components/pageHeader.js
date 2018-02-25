@@ -7,9 +7,7 @@ const MenuItem = Menu.Item;
 class PageHeader extends Component {
   render() {
     return (
-      <Menu
-        mode={'horizontal'}
-      >
+      <Menu mode={'horizontal'}>
         <MenuItem>
           <Link href={'/'}>
             <a> 主页 </a>
@@ -24,6 +22,12 @@ class PageHeader extends Component {
           <Link href={'/allMovies'}>
             <a>所有电影</a>
           </Link>
+        </MenuItem>
+        <MenuItem style={{ float: 'right' }}>
+          <Link href={'/signIn'}>注册</Link>
+        </MenuItem>
+        <MenuItem style={{ float: 'right' }}>
+          <Link href={'/login'}>登录</Link>
         </MenuItem>
       </Menu>
     );
