@@ -31,14 +31,15 @@ const getMoviesData = async (page, pageSize) => {
 };
 
 class AllMovies extends Component {
-  state = {
-    moviesTotalAmount: 0,
-    movies: [],
-  };
 
   static getInitialProps = async () => {
     const moviesData = await getMoviesData();
     return moviesData || {};
+  };
+
+  state = {
+    moviesTotalAmount: 0,
+    movies: [],
   };
 
   componentWillMount() {
@@ -50,6 +51,7 @@ class AllMovies extends Component {
   }
 
   changePage = async (page, pageSize) => {
+    console.log(page, pageSize, this);
     const data = await getMoviesData(page, pageSize);
     this.setState(data);
   };
@@ -63,7 +65,7 @@ class AllMovies extends Component {
           );
         })}
         <Pagination
-          style={{ float: 'right' }}
+          style={{ float: 'right', marginBottom: 20 }}
           total={moviesTotalAmount}
           pageSize={pageSize}
           onChange={this.changePage}
